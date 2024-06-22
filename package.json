@@ -1,0 +1,27 @@
+{
+  "name": "niles-contact-backend",
+  "version": "1.0.0",
+  "description": "a contact me backend for simple frontend forms",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mosessmax",
+  "license": "MIT",
+  "dependencies": {
+    "consola": "^2.15.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "nodemailer": "^6.7.5",
+    "nodemon": "^2.0.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mosessmax/niles-contact-backend.git"
+  }
+}
