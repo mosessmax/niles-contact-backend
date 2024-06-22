@@ -9,10 +9,15 @@ class Contact {
    logger.info(data)
    res.status(data.code).json(data);
   } catch (error) {
-   logger.error(error)
-   res.status(error.code).json(error);
+    logger.error(error);
+    const statusCode = error.code || 500; 
+    res.status(statusCode).json({
+      message: error.message || 'an unexpected error occurred',
+      ...error
+    });
   }
  }
 }
+
 
  module.exports = Contact;

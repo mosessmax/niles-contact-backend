@@ -7,6 +7,7 @@ exports.validateContact = async (req, res, next) => {
    next()
   }
   else {
-   res.status(valid.code).json(valid);
+    const statusCode = valid.code || 400; 
+    res.status(statusCode).json(valid);
   }
 }

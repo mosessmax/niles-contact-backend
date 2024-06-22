@@ -1,4 +1,4 @@
-const MailNotification = require('./notification.service');
+// const MailNotification = require('./notification.service');
 const {
  gen
 } = require("../utils/http.response"),
@@ -13,28 +13,50 @@ const {
  } = require("../utils/http.response.code");
 
 class Contact {
- constructor(data) {
-  this.name = data.name;
-  this.email = data.email;
-  this.message = data.message;
- }
+ constructor(data, MailNotificationService) {
+    this.mailNotification = mailNotificationService;
+    this.name = data.name;
+    this.email = data.email;
+    this.phone = data.phone;
+    this.company = data.company;
+    this.website = data.website;
+    this.product = data.product;
+    this.quantity = data.quantity;
+    this.location = data.location;
+    this.message = data.message;
+  }
 
+
+  validateData() {
+    // basic validation 
+    if (!this.name || !this.email || !this.message) {
+        return false;
+    }
+    return true;
+}
  async send(origin) {
   this.origin = origin;
-  if (!this.name || !this.email || !this.message) {
+if (!this.validateData()) {
    return gen(HTTP_BAD_REQUEST, MAIL_FAILED);
   }
 
-  const adminMail = await MailNotification.sendAdminMail(this);
-  if (adminMail) {
-   const userMail = await MailNotification.sendUsersMail(this);
+  try {
+  const adminMail = await this.mailNotification.sendAdminMail(this);
+  if (!adminMail) {
+    throw new Error('failed to send admin mail');
+  }
+
+   const userMail = await this.mailNotification.sendUsersMail(this);
    if (userMail) {
-    return gen(HTTP_OK, MAIL_SENT);
-   }else {
-    throw gen(HTTP_INTERNAL_SERVER_ERROR, SERVER_ERROR);
+    throw new Error('failed to send user mail');
    }
-  } else throw gen(HTTP_INTERNAL_SERVER_ERROR, SERVER_ERROR);
- }
+    return gen(HTTP_OK, MAIL_SENT);
+} catch (error) {
+    console.error(error);
+    return gen(HTTP_INTERNAL_SERVER_ERROR, SERVER_ERROR);
 }
+}
+}
+
 
 module.exports = Contact;
