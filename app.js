@@ -70,7 +70,7 @@ const formSchema = Joi.object({
       // Send email
       await transporter.sendMail({
         from: process.env.EMAIL_USER, // Sender address
-        to: "hey@mosess.xyz", // reciever
+        to: "info@terrahaptix.com", // reciever
         subject: "New Form Submission", // Subject line
         text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nWebsite: ${website}\nProduct: ${product}\nQuantity: ${quantity}\nLocation: ${location}\nMessage: ${message}`, 
       });
