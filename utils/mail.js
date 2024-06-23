@@ -6,18 +6,18 @@ const { info, error, success } = require('consola');
 exports.send = async function(message) {
     info("sending mail to", message.to+'...');
     const transporter = nodemailer.createTransport({
-        host: config.smtp_host,
+        host: process.env.SMTP_HOST,
         port: 587, // 587 465
         secure: false,
         auth: {
-            user: config.smtp_from,
-            pass: config.smtp_secret
-        }
+            user: process.env.EMAIL_USER, // Your email
+            pass: process.env.EMAIL_PASS, // Your email password
+          },
     })
     const packet = {
-        from: `"${config.smtp_user}" <${config.smtp_from}>`,
+        from: `"${process.env.EMAIL_USER}" <${process.env.EMAIL_USER}>`,
         to: message.to,
-        replyTo: `<${config.smtp_reply_to}>`,
+        replyTo: `<${process.env.SMTP_REPLY_TO}>`,
         subject: message.subject,
         html: message.body
     };
@@ -48,5 +48,3 @@ exports.send = async function(message) {
         throw new Error("Something is wrong with the mail service, please try again.");
     }
 };
-
-
