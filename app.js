@@ -48,7 +48,7 @@ const formSchema = Joi.object({
       // Send email
       await transporter.sendMail({
         from: process.env.EMAIL_USER, // Sender address
-        to: `adebayomoses597@gmail.com, ${email}`, // receiver
+        to: `${email}`, // receiver
         subject: "New Form Submission is here!", // Subject line
         html: `
           <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px;">
