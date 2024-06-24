@@ -15,6 +15,9 @@ dotenv.config();
 // Nodemailer configuration
 const transporter = nodemailer.createTransport({
   service: 'gmail', // Use your preferred service
+  host: process.env.SMTP_HOST,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER, // Your email
     pass: process.env.EMAIL_PASS, // Your email password
@@ -45,7 +48,7 @@ const formSchema = Joi.object({
       // Send email
       await transporter.sendMail({
         from: process.env.EMAIL_USER, // Sender address
-        to: "info@terrahaptix.com", // reciever
+        to: "", // reciever
         subject: "New Form Submission", // Subject line
         text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nWebsite: ${website}\nProduct: ${product}\nQuantity: ${quantity}\nLocation: ${location}\nMessage: ${message}`, 
       });
@@ -59,3 +62,10 @@ const formSchema = Joi.object({
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+// Add a route for handling errors
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Internal Server Error');
+});
