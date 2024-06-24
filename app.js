@@ -45,10 +45,10 @@ const formSchema = Joi.object({
       // destructure validated data
       const { name, email, phone, company, website, product, quantity, location, message } = req.body;
   
-      // Send email
+      // sennd email to admin
       await transporter.sendMail({
         from: process.env.EMAIL_USER, // Sender address
-        to: `${email}`, // receiver
+        to: process.env.EMAIL_USER, // receiver
         subject: "New Form Submission is here!", // Subject line
         html: `
           <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px;">
@@ -69,6 +69,21 @@ const formSchema = Joi.object({
         `,
       });
   
+
+      // Send thank you email to the user
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER, // 
+        to: `${email}`, // the users email from the form
+        text: "Thank you, your information has been received.", //
+        html: `
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px;">
+            <h2 style="color: #333;">Thank you for your submission</h2>
+            <p>We have received your information and will get back to you shortly.</p>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #666;">This is an automated message. Please do not reply directly to this email.</p>
+            </div>
+        `
+    });
+
       res.status(200).send('form submitted successfully');
     } catch (error) {
       res.status(400).send(error.message);
