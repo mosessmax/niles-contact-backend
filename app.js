@@ -48,9 +48,25 @@ const formSchema = Joi.object({
       // Send email
       await transporter.sendMail({
         from: process.env.EMAIL_USER, // Sender address
-        to: "", // reciever
-        subject: "New Form Submission", // Subject line
-        text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nWebsite: ${website}\nProduct: ${product}\nQuantity: ${quantity}\nLocation: ${location}\nMessage: ${message}`, 
+        to: `adebayomoses597@gmail.com, ${email}`, // receiver
+        subject: "New Form Submission is here!", // Subject line
+        html: `
+          <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 20px;">
+            <h2 style="color: #333;">New Form Submission</h2>
+            <div style="padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;">
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Phone:</strong> ${phone}</p>
+              <p><strong>Company:</strong> ${company}</p>
+              <p><strong>Website:</strong> <a href="${website}" style="color: #0066cc;">${website}</a></p>
+              <p><strong>Product:</strong> ${product}</p>
+              <p><strong>Quantity:</strong> ${quantity}</p>
+              <p><strong>Location:</strong> ${location}</p>
+              <p><strong>Message:</strong> ${message}</p>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #666;">This is an automated message. Please do not reply directly to this email.</p>
+          </div>
+        `,
       });
   
       res.status(200).send('form submitted successfully');

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+</head>
+<body>
+    <form id="contactForm" action="http://localhost:3000/submit-form" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required><br><br>
+
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required><br><br>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" name="website" required><br><br>
+
+        <label for="product">Product:</label>
+        <input type="text" id="product" name="product" required><br><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required><br><br>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        // random data fill 
+
+        window.onload = function() {
+    fillFormWithRandomData();
+};
+
+function fillFormWithRandomData() {
+    document.getElementById('name').value = `Test Name ${Math.floor(Math.random() * 100)}`;
+    document.getElementById('email').value = `mosessmax@gmail.com`;
+    document.getElementById('phone').value = `123-456-${Math.floor(1000 + Math.random() * 9000)}`;
+    document.getElementById('company').value = `Company ${Math.floor(Math.random() * 100)}`;
+    document.getElementById('website').value = `http://www.example${Math.floor(Math.random() * 100)}.com`;
+    document.getElementById('product').value = `Product ${Math.floor(Math.random() * 100)}`;
+    document.getElementById('quantity').value = Math.floor(1 + Math.random() * 100);
+    document.getElementById('location').value = `Location ${Math.floor(Math.random() * 100)}`;
+    document.getElementById('message').value = `This is a test message ${Math.floor(Math.random() * 100)}.`;
+}
+
+document.getElementById('contactForm').onsubmit = async function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formProps = Object.fromEntries(formData);
+    // The rest of your form submission logic...
+};
+
+// end random data 
+      document.getElementById('contactForm').onsubmit = async function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formProps = Object.fromEntries(formData);
+    try {
+        const response = await fetch(event.target.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formProps),
+        });
+        // Check if the response Content-Type is application/json before parsing
+        if (response.headers.get("Content-Type").includes("application/json")) {
+            const result = await response.json();
+            alert(result.message);
+        } else {
+            // Handle non-JSON responses or log for debugging
+            console.log("Received non-JSON response");
+            const textResponse = await response.text(); // Or handle as needed
+            alert(textResponse);
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('An error occurred while submitting the form');
+    }
+};
+    </script>
+</body>
+</html>
